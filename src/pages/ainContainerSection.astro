@@ -1,0 +1,41 @@
+---
+const allPosts = await Astro.glob('../posts/*.md');
+// Latest 4 posts for feature section 1
+const posts = allPosts
+  .sort((a, b) => new Date(b.frontmatter.publishDate) - new Date(a.frontmatter.publishDate))
+  .slice(0, 4);
+---
+<section class="w-full max-w-[1200px] mx-auto py-8">
+  <div class="w-full mb-6">
+    <hr class="mb-5 border-[#d9d9d9]" />
+    <div class="flex items-center">
+      <div class="w-3 h-3 bg-[#006aff] rounded-sm"></div>
+      <span class="ml-4 font-medium text-[11.2px] tracking-[1.80px]">POST TITLE - FEATURE SECTION 1</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-0">
+    {posts.map((post, index) => (
+      <article
+        class="relative p-4 ${index > 0 ? 'border-l border-[#d9d9d9]' : ''}"
+        key={post.url}
+      >
+        <a href={post.url} class="inline-block">
+          <span class="inline-block bg-[#c9e8f5] text-[#121212] rounded px-2 py-1 text-[10.7px] font-medium tracking-[1.20px]">
+            {post.frontmatter.category}
+          </span>
+          <h3 class="mt-4 text-[20.8px] leading-[30px] font-medium text-[#121212]">
+            {post.frontmatter.title}
+          </h3>
+        </a>
+        <div class="mt-4 text-[10.7px] tracking-[1.20px]">
+          <time class="font-medium text-neutral-500">
+            {new Date(post.frontmatter.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          </time>
+          {' — '}
+          <span class="text-[#121212]">{post.frontmatter.readTime}</span>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
