@@ -1,0 +1,34 @@
+---
+const allPosts = await Astro.glob('../posts/*.md');
+// Find first overlay-designated post
+const post = allPosts.find(p => p.frontmatter.overlay) || allPosts[0];
+---
+<section class="w-full max-w-[1168px] mx-auto rounded-[20px] relative py-8">
+  <article class="rounded-[20px] overflow-hidden">
+    <div class="relative w-full h-[680px] bg-cover bg-center" style={`background-image: url(${post.frontmatter.image})`}>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#121212] opacity-75"></div>
+      <div class="absolute inset-0 p-16 flex flex-col justify-end text-white">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            {post.frontmatter.category && (
+              <span class="inline-block bg-[#f2f2f2] text-[#121212] rounded px-2 py-1 text-[10.7px] tracking-[1.20px] font-medium mb-4">
+                {post.frontmatter.category.toUpperCase()}
+              </span>
+            )}
+            <h2 class="text-[29.2px] leading-[38px] font-medium mb-2">{post.frontmatter.title}</h2>
+            <time class="block text-[10.5px] tracking-[1.20px] leading-[18px] mb-6">
+              {new Date(post.frontmatter.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} — {post.frontmatter.readTime}
+            </time>
+          </div>
+          <div>
+            <p class="text-[19.4px] leading-8 mb-8">{post.frontmatter.description}</p>
+            <a href={post.url} class="inline-flex items-center bg-[#006aff] hover:bg-[#0055cc] text-white rounded h-[47px] px-4 font-normal text-[15.6px]">
+              <PlayIcon class="w-3.5 h-3.5 mr-2" />
+              Play video
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
